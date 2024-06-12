@@ -1,0 +1,43 @@
+﻿<!-- InputDecimal.razor -->
+<input @attributes="AdditionalAttributes"
+       type="number"
+       class="@CssClass"
+       value="@stringValue"
+       @oninput="OnInput"
+       @onblur="OnBlur" />
+
+@code {
+    private string stringValue;
+    private decimal lastParsedValue;
+
+    [Parameter] public EventCallback<decimal> ValueChanged { get; set; }
+    [Parameter] public string CssClass { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object> AdditionalAttributes { get; set; }
+
+    [Parameter] public decimal Value { get; set; }
+
+    protected override void OnInitialized()
+    {
+        lastParsedValue = Value;
+        stringValue = Value.ToString();
+    }
+
+    private void OnInput(ChangeEventArgs e)
+    {
+        if (decimal.TryParse((string)e.Value, out decimal parsedValue))
+        {
+            ValueChanged.InvokeAsync(parsedValue);
+            lastParsedValue = parsedValue;
+        }
+    }
+
+    private void OnBlur(FocusEventArgs e)
+    {
+        if (!string.IsNullOrWhiteSpace(stringValue) && decimal.TryParse(stringValue, out decimal parsedValue))
+        {
+            ValueChanged.InvokeAsync(parsedValue);
+            lastParsedValue = parsedValue;
+            stringValue = parsedValue.ToString();
+        }
+    }
+}

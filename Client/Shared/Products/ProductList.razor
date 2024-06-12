@@ -7,8 +7,9 @@ else if (Products != null && Products.Count() > 0)
     <ul class="list">
         @foreach (var product in Products)
         {
+            //dinamicamente esto son las cards de la pagina de productos
             <li role="presentation">
-                <div class="card">
+                <div class="card"> 
                     <CardContent Name="@product.Name"
                                  Description="@product.Description" />
 
