@@ -21,8 +21,8 @@ namespace Api
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "academias")] HttpRequest req)
         {
-            var products = await academiaData.GetAcademias();
-            return new OkObjectResult(products);
+            var academias = await academiaData.GetAcademias();
+            return new OkObjectResult(academias);
         }
     }
 }

@@ -72,6 +72,4 @@ namespace Api
             return Task.FromResult(academias.AsEnumerable());
         }
     }
- 
-
 }

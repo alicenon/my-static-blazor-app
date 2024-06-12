@@ -1,14 +1,24 @@
 ﻿<div class="card-content has-background-light">
     <div class="content">
+@*         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+ *@
         <div class="name">Centro de formación: @Name</div>
-        <div class="description">Ciclo: @NameCFGS</div>
-        <div class="description">Modalidad: @Tipo</div>
-        <div class="description">Distancia: @String.Format("{0:0.00} km", Distancia)</div>
-        <div class="description">Descripción:
-            @Description</div>
-        
-    </div>
+        <div class="description"><strong>Ciclo:</strong> @NameCFGS</div>
+        <div class="description"><strong>Modalidad:</strong> @Tipo</div>
+        <div class="description"><strong>Distancia:</strong> @String.Format("{0:0.00} km", Distancia)</div>
+        <div class="description"><strong>Descripción:</strong> @Description</div>
+        <div class="description"><strong>Turno:</strong> @Turno</div>
+        @* <div class="description"><strong>Sitio Web:</strong> @Url</div> *@
+        <div class="description">
+            <NavLink href="@Url" ActiveClass="active-link" target="_blank" class="has-text-primary">
+                Ir al Sitio Web
+            </NavLink>
+        </div>
+
+@*         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+ *@    </div>
 </div>
+
 
 @code {
     [Parameter] public string Name { get; set; }
@@ -16,4 +26,6 @@
     [Parameter] public string Tipo { get; set; }
     [Parameter] public string NameCFGS { get; set; }
     [Parameter] public string Distancia { get; set; }
+    [Parameter] public string Turno { get; set; }
+    [Parameter] public string Url { get; set; }
 }

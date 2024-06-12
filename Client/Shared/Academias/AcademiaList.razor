@@ -14,16 +14,18 @@
                                      Description="@academia.Description" 
                                      Tipo="@academia.Tipo"
                                      NameCFGS="@academia.NameCFGS" 
-                                     Distancia="@academia.Distancia"/>
+                                     Distancia="@academia.Distancia"
+                                     Turno="@academia.Turno"
+                                     Url="@academia.Url"/>
 
                         <footer class="card-footer">
 
                             <ButtonFooter Class="delete-item"
-                                          IconClasses="fas fa-trash"
+                                      IconClasses="fas fa-trash btn-danger"
                                           OnClick="@(async _ => await DeleteAcademia.InvokeAsync(academia))"
                                           Label="Borrar" />
 
-                            <ButtonFooter Class="edit-item btn-danger"
+                            <ButtonFooter Class="edit-item btn-warning"
                                           IconClasses="fas fa-edit"
                                           OnClick="@(async _ => await SelectAcademia.InvokeAsync(academia))"
                                           Label="Editar"/>
