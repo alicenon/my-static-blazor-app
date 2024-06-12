@@ -1,0 +1,48 @@
+﻿    @if (!string.IsNullOrEmpty(ErrorMessage))
+    {
+        <div>@ErrorMessage</div>
+    }
+    else if (Academias != null && Academias.Count() > 0)
+    {
+        <ul class="list">
+            @foreach (var academia in Academias)
+            {
+                //dinamicamente esto son los atributos del conenido data para cards de la pagina de academias
+                <li role="presentation">
+                    <div class="card">
+                        <CardContent Name="@academia.Name"
+                                     Description="@academia.Description" 
+                                     Tipo="@academia.Tipo"
+                                     NameCFGS="@academia.NameCFGS" 
+                                     Distancia="@academia.Distancia"/>
+
+                        <footer class="card-footer">
+
+                            <ButtonFooter Class="delete-item"
+                                          IconClasses="fas fa-trash"
+                                          OnClick="@(async _ => await DeleteAcademia.InvokeAsync(academia))"
+                                          Label="Borrar" />
+
+                            <ButtonFooter Class="edit-item btn-danger"
+                                          IconClasses="fas fa-edit"
+                                          OnClick="@(async _ => await SelectAcademia.InvokeAsync(academia))"
+                                          Label="Editar"/>
+
+                        </footer>
+
+                    </div>
+
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <div>Loading academias...</div>
+    }
+    @code {
+        [Parameter] public IEnumerable<Academia> Academias { get; set; }
+        [Parameter] public EventCallback<Academia> DeleteAcademia { get; set; }
+        [Parameter] public EventCallback<Academia> SelectAcademia { get; set; }
+        [Parameter] public string ErrorMessage { get; set; }
+    }

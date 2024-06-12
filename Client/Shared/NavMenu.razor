@@ -1,4 +1,4 @@
-﻿<div class="column is-2">
+﻿@* <div class="column is-2">
     <nav class="menu">
         <p class="menu-label">Menu</p>
         <ul class="menu-list">
@@ -11,6 +11,58 @@
             <NavLink href="/about" ActiveClass="active-link">
                 About
             </NavLink>
+
+            <NavLink href="/academias" ActiveClass="active-link">
+                Academias FP
+            </NavLink>
         </ul>
     </nav>
+</div> *@
+@inject IJSRuntime JSRuntime
+<div class="column is-2">
+    <nav class="navbar is-light" role="navigation" aria-label="main navigation">
+        <p class="menu-label">Menu</p>
+        <ul class="menu-list">
+            <!-- Enlaces del menú aquí -->
+            <li>
+                <NavLink href="/" Match="NavLinkMatch.All" ActiveClass="active-link">
+                    Home
+                </NavLink>
+            </li>
+            <li>
+                <NavLink href="/products" ActiveClass="active-link">
+                    Products
+                </NavLink>
+            </li>
+            <li>
+                <NavLink href="/about" ActiveClass="active-link">
+                    About
+                </NavLink>
+            </li>
+            <li>
+                <NavLink href="/academias" ActiveClass="active-link">
+                    Academias FP
+                </NavLink>
+            </li>
+
+            <div class="buttons mt-4">
+                <!-- Agregando margen superior de 4 -->
+                <a class="button is-primary " @onclick="MostrarAlerta">
+                    <strong>Sign up</strong>
+                </a>
+                <a class="button is-light" @onclick="MostrarAlerta">
+                    Log in
+                </a>
+            </div>
+        </ul>
+        <!-- Botones debajo de los enlaces del menú -->
+     
+    </nav>
 </div>
+@code {
+    // Método para llamar a la función JavaScript de wwwroot
+    private async Task MostrarAlerta()
+    {
+        await JSRuntime.InvokeVoidAsync("mostrarAlerta");
+    }
+}

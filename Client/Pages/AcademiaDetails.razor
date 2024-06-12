@@ -1,0 +1,105 @@
+﻿@page "/academia/{academiaId:int}"
+@inject HttpClient http
+@inject NavigationManager navigation
+
+@if (academia == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="card edit-detail">
+        <header class="card-header">
+            <p class="card-header-title">
+                @academia.Name
+            </p>
+        </header>
+        <div class="card-content " >
+            <div class="content">
+                @if (academia.Id != 0)
+                {
+                    <label class="label" for="id">id</label>
+                    <input name="id"
+                           class="input"
+                           value="@academia.Id"
+                           readonly="readonly" />
+                }
+                <InputDetail Name="name"
+                             Placeholder="type academia"
+                             @bind-Value="academia.Name" />
+                <InputDetail Name="description"
+                             Placeholder="box"
+                             @bind-Value="academia.Description" />
+
+                <InputDetail Name="distance"
+                             Placeholder="0,0"
+                             @bind-Value="academia.Distancia" />
+                @* <div class="field">
+                    <label class="label" for="quantity">
+                        distancia en kilometros 
+                    </label>
+                    <input name="distance"
+                           class="input"
+                           type="text"                 
+                           value="@academia.Distancia"
+                           placeholder="0,00"
+                          /> *@
+                    @* <InputDecimal @bind-Value="academia.Distancia" /> *@
+
+               @*  </div> *@
+            </div>
+        </div>
+        <footer class="card-footer ">
+            <ButtonFooter Class="cancel-button"
+                          IconClasses="fas fa-undo"
+                          OnClick="@CancelAcademia"
+                          Label="Cancel" />
+            <ButtonFooter Class="save-button"
+                          IconClasses="fas fa-save"
+                          OnClick="@Save"
+                          Label="Save" />
+        </footer>
+    </div>
+}
+
+@code {
+    private Academia academia;
+
+    [Parameter] public int AcademiaId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (AcademiaId == 0)
+        {
+            academia = new Academia();
+        }
+        else
+        {
+            var academias = await http.GetFromJsonAsync<IEnumerable<Academia>>("api/academias");
+            academia = academias.First(p => p.Id == AcademiaId);
+        }
+    }
+
+    private void CancelAcademia()
+    {
+        navigation.NavigateTo("/");
+    }
+
+    private async Task Save()
+    {
+        if (academia.Id == 0)
+        {
+            await http.PostAsJsonAsync("api/academias", academia);
+        }
+        else
+        {
+            await http.PutAsJsonAsync("api/academias", academia);
+        }
+        navigation.NavigateTo("/");
+    }
+    private async Task UpdateDistance(string distance)
+    {
+        academia.Distancia = distance;
+    }
+
+}

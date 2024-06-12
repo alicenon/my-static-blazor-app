@@ -1,0 +1,72 @@
+﻿@page "/academias"
+@inject HttpClient http
+@inject NavigationManager navigation
+
+<div class="content-container">
+    <ListHeader Title="List Academias"
+                HandleAdd="@AddNewAcademia"
+                HandleRefresh="@HandleRefresh"
+                RoutePath="/academias" />
+    <div class="columns is-multiline is-variable">
+        <div class="column is-8" >
+            <AcademiaList ErrorMessage="@errorMessage"
+                         Academias="@academias"
+                         SelectAcademia="@SelectAcademia"
+                         DeleteAcademia="@DeleteAcademia" />
+        </div>
+    </div>
+
+    <ModalYesNo Message="@modalMessage"
+                OnNo="@CloseModal"
+                OnYes="@DeleteFromModal"
+                Show="@showModal" />
+</div>
+
+@code {
+    private string errorMessage = "";
+    private IEnumerable<Academia> academias;
+    private Academia academiaToDelete;
+    private bool showModal;
+    private string modalMessage = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        academias = await http.GetFromJsonAsync<IEnumerable<Academia>>("api/academias");
+    }
+
+    private void AddNewAcademia()
+    {
+        navigation.NavigateTo("/academia/0");
+    }
+
+    private async Task HandleRefresh()
+    {
+        academias = await http.GetFromJsonAsync<IEnumerable<Academia>>("api/academias");
+    }
+
+    private void SelectAcademia(Academia academia)
+    {
+        navigation.NavigateTo($"/academia/{academia.Id}");
+    }
+
+    private void DeleteAcademia(Academia academia)
+    {
+        academiaToDelete = academia;
+        showModal = true;
+        modalMessage = $"Would you like to delete {academiaToDelete.Name}";
+    }
+
+    private void CloseModal()
+    {
+        academiaToDelete = null;
+        showModal = false;
+    }
+
+    private async Task DeleteFromModal()
+    {
+        await http.DeleteAsync($"api/academias/{academiaToDelete.Id}");
+        await HandleRefresh();
+        academiaToDelete = null;
+        showModal = false;
+    }
+}
